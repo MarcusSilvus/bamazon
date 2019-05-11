@@ -15,11 +15,17 @@ connection.connect(function(err) {
 });
 
 function openShop() {
-  console.log('\n                             WELCOME');
-  console.log('*************************************************************');
-  console.log('*                            Bamazon                        *');
-  console.log('*                       Climbing Department                 *');
-  console.log('*************************************************************');
+  console.log('\n                           * WELCOME *');
+  console.log('*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*');
+  console.log('|                            Bamazon                        |');
+  console.log('|                       Climbing Department                 |');
+  console.log('*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*');
+
+  connection.query("SELECT * FROM products", function(err, res) {
+    if (err) throw err;
+    console.log(res);
+  });
+  
   connection.end();
 }
 
