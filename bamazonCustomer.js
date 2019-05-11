@@ -14,6 +14,7 @@ connection.connect(function(err) {
   openShop();
 });
 
+// function that displays welcome and items
 function openShop() {
   console.log('\n                           * WELCOME *');
   console.log('*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*');
@@ -23,13 +24,22 @@ function openShop() {
 
   connection.query("SELECT * FROM products", function(err, res) {
     if (err) throw err;
-    console.log(res);
+    // console.log(res);
+    for (var i = 0; i < res.length; i++) {
+      console.log(
+        res[i].item_id, 
+        res[i].product_name, 
+        res[i].department_name,
+        res[i].price,
+        res[i].stock,
+        );
+    }
+    
   });
   
   connection.end();
 }
 
-// when program is run, display welcome and items
 
 // ask shopper what item_id they want
 
