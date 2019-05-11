@@ -6,13 +6,22 @@ var connection  = mysql.createConnection({
   port: '3306',
   user: 'root',
   password: 'squackBox1!',
-  database: 'bamazonDB'
+  database: 'bamazomDB'
 });
 
 connection.connect(function(err) {
   if (err) throw err;
   openShop();
 });
+
+function openShop() {
+  console.log('\n                             WELCOME');
+  console.log('*************************************************************');
+  console.log('*                            Bamazon                        *');
+  console.log('*                       Climbing Department                 *');
+  console.log('*************************************************************');
+  connection.end();
+}
 
 // when program is run, display welcome and items
 
