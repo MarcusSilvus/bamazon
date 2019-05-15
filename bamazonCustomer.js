@@ -23,11 +23,11 @@ function openShop() {
   console.log('*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*');
   console.log('\n');
   console.log(
-    '|Item Number',
-    '   |Product',
-    '                  |Deparment',
-    '                  |Price',
-    '          |Stock'
+    'Item Number',
+    '||Product',
+    '||Deparment',
+    '||Price',
+    '||Stock'
   );
 
 
@@ -36,11 +36,11 @@ function openShop() {
     // console.log(res);
     for (var i = 0; i < res.length; i++) {
       console.log(
-        "    " + res[i].item_id,
-        "           " + res[i].product_name,
-        "                 " + res[i].department_name,
-        "               " + res[i].price,
-        "               " + res[i].stock
+        "" + res[i].item_id,
+        "     ||" + res[i].product_name,
+        "  ||" + res[i].department_name,
+        "  || $ " + res[i].price,
+        "  ||" + res[i].stock
       );
     }
     console.log('\n');
@@ -82,7 +82,7 @@ function buyGear() {
     .prompt({
       name: "gear",
       type: "input",
-      message: "Please enter item number"
+      message: "Please enter item number:"
     })
     .then(function(){
     // ask shopper how many of that item they want
