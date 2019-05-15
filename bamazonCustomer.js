@@ -94,7 +94,6 @@ function buyGear() {
       var userSelectionId = parseInt(answer.item);
       var selectedItem = products.find(product => product.item_id === userSelectionId);
       if (selectedItem) {
-        console.log("it's there");
         // ask shopper how many of that item they want
         inquirer
           .prompt({
@@ -102,12 +101,14 @@ function buyGear() {
             type: "input",
             message: "How many " + selectedItem.product_name + " would you like?"
           }).then(function (answer) {
-            console.log(answer);
             var quantity = parseInt(answer.quantity);
             if (selectedItem.stock >= quantity) {
               var query = "UPDATE products SET stock = ? WHERE item_id = ?";
               connection.query(query, [selectedItem.stock - quantity, selectedItem.item_id], function (err, res) {
-                console.log(res);
+              });
+              var total = "SELECT FROM products SET stock = ? WHERE item_id = ?";
+              connection.query(total, [selectedItem.price * quantity, selectedItem.item_id], function (err, res) {
+                console.log("Your total is $" + total); -- NOT WORKING!!!
               });
             }
           })
