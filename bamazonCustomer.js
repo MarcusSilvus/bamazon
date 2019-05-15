@@ -14,6 +14,8 @@ connection.connect(function (err) {
   openShop();
 });
 
+var products = [];
+
 // function that displays welcome and items
 function openShop() {
   console.log('\n                                        * WELCOME *');
@@ -33,16 +35,20 @@ function openShop() {
 
   connection.query("SELECT * FROM products", function (err, res) {
     if (err) throw err;
+    products = res;
     // console.log(res);
-    for (var i = 0; i < res.length; i++) {
-      console.log(
-        "" + res[i].item_id,
-        "     ||" + res[i].product_name,
-        "  ||" + res[i].department_name,
-        "  || $ " + res[i].price,
-        "  ||" + res[i].stock
-      );
-    }
+    // for (var i = 0; i < res.length; i++) {
+    //   console.log(
+    //     "" + res[i].item_id,
+    //     "     ||" + res[i].product_name,
+    //     "  ||" + res[i].department_name,
+    //     "  || $ " + res[i].price,
+    //     "  ||" + res[i].stock
+    //   );
+    // }
+    // console.log(JSON.stringify(res));
+
+    console.table(res);
     console.log('\n');
     shopping();
   });
@@ -68,8 +74,8 @@ function shopping() {
 
         case "Exit":
           console.log('\n\n      Thanks for shopping with us!');
-          console.log('         Come back any time!');        
-          console.log('\n\n'); 
+          console.log('         Come back any time!');
+          console.log('\n\n');
           connection.end();
           break;
       }
@@ -80,13 +86,36 @@ function shopping() {
 function buyGear() {
   inquirer
     .prompt({
-      name: "gear",
+      name: "item",
       type: "input",
       message: "Please enter item number:"
     })
-    .then(function(){
-    // ask shopper how many of that item they want
-    });
+    .then(function (answer) {
+      var userSelectionId = parseInt(answer.item);
+      var selectedItem = products.find(product => product.item_id === userSelectionId);
+      if (selectedItem) {
+        console.log("it's there");
+        // ask shopper how many of that item they want
+        inquirer
+          .prompt({
+            name: "quantity",
+            type: "input",
+            message: "How many " + selectedItem.product_name + " would you like?"
+          }).then(function (answer) {
+            console.log(answer);
+            var quantity = parseInt(answer.quantity);
+            if (selectedItem.stock >= quantity) {
+              var query = "UPDATE products SET stock = ? WHERE item_id = ?";
+              connection.query(query, [selectedItem.stock - quantity, selectedItem.item_id], function (err, res) {
+                console.log(res);
+              });
+            }
+          })
+      } else {
+        console.log("Please make a valid selection.");
+        buyGear();
+      }
+    })
 }
 
 
