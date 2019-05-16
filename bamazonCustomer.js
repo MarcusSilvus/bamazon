@@ -24,30 +24,10 @@ function openShop() {
   console.log('|                                   Climbing Department                               |');
   console.log('*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*');
   console.log('\n');
-  console.log(
-    'Item Number',
-    '||Product',
-    '||Deparment',
-    '||Price',
-    '||Stock'
-  );
-
 
   connection.query("SELECT * FROM products", function (err, res) {
     if (err) throw err;
     products = res;
-    // console.log(res);
-    // for (var i = 0; i < res.length; i++) {
-    //   console.log(
-    //     "" + res[i].item_id,
-    //     "     ||" + res[i].product_name,
-    //     "  ||" + res[i].department_name,
-    //     "  || $ " + res[i].price,
-    //     "  ||" + res[i].stock
-    //   );
-    // }
-    // console.log(JSON.stringify(res));
-
     console.table(res);
     console.log('\n');
     shopping();
@@ -93,25 +73,54 @@ function buyGear() {
     .then(function (answer) {
       var userSelectionId = parseInt(answer.item);
       var selectedItem = products.find(product => product.item_id === userSelectionId);
+      // console.log(selectedItem);
+
       if (selectedItem) {
         // ask shopper how many of that item they want
         inquirer
           .prompt({
             name: "quantity",
             type: "input",
-            message: "How many " + selectedItem.product_name + " would you like?"
+            message: "How many " + selectedItem.product_name + "'s would you like?"
           }).then(function (answer) {
             var quantity = parseInt(answer.quantity);
             if (selectedItem.stock >= quantity) {
               var query = "UPDATE products SET stock = ? WHERE item_id = ?";
               connection.query(query, [selectedItem.stock - quantity, selectedItem.item_id], function (err, res) {
-              });
-              var total = "SELECT FROM products SET stock = ? WHERE item_id = ?";
-              connection.query(total, [selectedItem.price * quantity, selectedItem.item_id], function (err, res) {
-                console.log("Your total is $" + total); -- NOT WORKING!!!
+                var total = selectedItem.price * quantity;
+                console.log("\nYou purchased " + quantity + " " + selectedItem.product_name + "'s.");
+                console.log("Your total is $" + total.toFixed(2));
+                console.log("\n");
+                
+                inquirer
+                  .prompt({
+                    name: "action",
+                    type: "list",
+                    message: "Would you like to make another purchase?",
+                    choices: [
+                      "Yes",
+                      "No"
+                    ]
+                  })
+                  .then(function (answer) {
+                    switch (answer.action) {
+                      case "Yes":
+                        console.table(products);
+                        buyGear();
+                        break;
+
+                      case "No":
+                        console.log('\n\n      Thanks for shopping with us!');
+                        console.log('         Come back any time!');
+                        console.log('\n\n');
+                        connection.end();
+                        break;
+                    }
+                  });
               });
             }
-          })
+          });
+
       } else {
         console.log("Please make a valid selection.");
         buyGear();
