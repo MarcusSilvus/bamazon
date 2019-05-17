@@ -16,6 +16,9 @@
 #### Once they select the quantity, they are give their total and asked if they would like to continue shopping
 ![Total](images/bamazon4.png)
 
+#### Once the purchase is made, the quantity they purchased is deducted from the inventory
+![Inventory](images/bamazon9.png)
+
 #### If they choose to continue shopping, they are directed by to the storefront and item_id prompt
 ![Continue](images/bamazon5.png)
 
