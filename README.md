@@ -11,6 +11,7 @@
 ![Item selection](images/bamazon3.png)
 
 ####If the user selects an number item_id number that does not exsist, the are prompted to enter a vaild selection
+![Item selection](images/bamazon8.png)
 
 ####Once they select the quantity, they are give their total and asked if they would like to continue shopping
 ![Quantity selection](images/bamazon4.png)
@@ -23,6 +24,6 @@
 
 ####They would exit the store
 ![Item selection](images/bamazon7.png)
-![Item selection](images/bamazon8.png)
+
 
 
