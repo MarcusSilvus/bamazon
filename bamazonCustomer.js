@@ -1,11 +1,14 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 
+// var sqlpass = env.sqlpass;
+var sqlpass = require(".env");
+
 var connection = mysql.createConnection({
   host: 'localhost',
   port: '3306',
   user: 'root',
-  password: 'squackBox1!',
+  password: sqlpass,
   database: 'bamazomDB'
 });
 
@@ -47,6 +50,7 @@ function shopping() {
       ]
     })
     .then(function (answer) {
+      // make a new connection to update the quantity in real time
       switch (answer.action) {
         case "Purchase gear":
           buyGear();
@@ -106,7 +110,8 @@ function buyGear() {
                     switch (answer.action) {
                       case "Yes":
                         console.table(products);
-                        buyGear();
+                        shopping();
+                        
                         break;
 
                       case "No":
